@@ -1,6 +1,6 @@
 # BoundMove
 
-#動作確認
+# 動作確認
 
 After Effects CC 2022
 
@@ -8,7 +8,7 @@ After Effects CC 2022
 
 BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panelsディレクトリに入れてください
 
-#使い方
+# 使い方
 
 ウィンドウメニューから起動してください
 
@@ -16,7 +16,7 @@ BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panels�
 
 複数レイヤー選択可能
 
-##Option内容
+## Option内容
 
 Decay：減衰
 Frequency：振動数
