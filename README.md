@@ -18,6 +18,8 @@ BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panels�
 適用したヌルオブジェクトまたはトランスフォームエフェクトに対してキーフレームを打つと打った時間を基準にしてバウンドします
 （エクスプレッション制御なので赤くなってる文字のところ）
 
+エフェクトのDecay,Frequency,Amplitudeそれぞれのスライダー制御の名前は変えちゃダメです　レイヤーの名前で取得しているためです
+
 複数レイヤー選択可能
 
 ## Option内容
