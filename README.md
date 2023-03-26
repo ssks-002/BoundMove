@@ -6,7 +6,7 @@ AfterEffectにおけるバウンドアニメーション用のドッキング可
 
 After Effects CC 2022
 
-インストール：
+# インストール：
 
 BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panelsディレクトリに入れてください
 
