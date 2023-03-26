@@ -15,6 +15,8 @@ BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panels�
 ウィンドウメニューから起動してください
 
 基本のレイアウトはOptionとApplyです　Optionで設定、Applyで適用
+適用したヌルオブジェクトまたはトランスフォームエフェクトに対してキーフレームを打つと打った時間を基準にしてバウンドします
+（エクスプレッション制御なので赤くなってる文字のところ）
 
 複数レイヤー選択可能
 
