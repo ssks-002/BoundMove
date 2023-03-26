@@ -1,5 +1,7 @@
 # BoundMove
 
+AfterEffectにおけるバウンドアニメーション用のドッキング可能なスクリプト
+
 # 動作確認
 
 After Effects CC 2022
