@@ -37,6 +37,7 @@ Amplitude：振幅
 directionドロップダウンメニュー：
 
 適用する方向を指定します
+
 Z-directionは後述のapply to positionかつcreate null controller選択時のみ可能かつ、生成されたヌルオブジェクトと選択したレイヤーがどちらとも3Dオブジェクトになっている必要があります
 
 apply to scale：
