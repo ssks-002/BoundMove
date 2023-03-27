@@ -8,7 +8,7 @@ After Effects CC 2022
 
 # インストール
 
-BoundMove.jsxをAdobe> Adobe After Effect (ver)> Support Files> ScriptUI Panelsディレクトリに入れてください
+BoundMove.jsxをAdobe> Adobe After Effect [version]> Support Files> ScriptUI Panelsディレクトリに入れてください
 
 # 使い方
 
