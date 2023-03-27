@@ -21,7 +21,7 @@ BoundMove.jsxをAdobe> Adobe After Effect 2022> Support Files> ScriptUI Panels�
 
 エフェクトのDecay,Frequency,Amplitudeそれぞれのスライダー制御の名前は変えちゃダメです　レイヤーの名前で取得しているためです
 
-また、c日本語版のエフェクト名を指定しているため、**英語版では正しく動作しません**
+また、日本語版のエフェクト名を指定しているため、**英語版では正しく動作しません**
 create null controllerオプションを使ってください
 
 複数レイヤー選択可能
