@@ -15,6 +15,7 @@ BoundMove.jsxをAdobe> Adobe After Effect 2022> Support Files> ScriptUI Panels�
 ウィンドウメニューから起動してください
 
 基本のレイアウトはOptionとApplyです　Optionで設定、Applyで適用
+
 適用したヌルオブジェクトまたはトランスフォームエフェクトに対してキーフレームを打つとキーフレームを基準にしてバウンドします
 （エクスプレッション制御なので赤くなってる文字のところ）
 
