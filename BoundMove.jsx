@@ -4,12 +4,14 @@ var freqvalue = {};
 var ampvalue = {};
 var Pos = {};
 var Sca = {};
-var ScaValue = true;
+var Rot = {};
+var ModeValue = {};
 var bynull = {};
 var BynullValue = true;
 var byeffect = {};
 var divdimension = {};
 var DivdimensionSelection = 0;
+ModeValue = 1;
 decayvalue.text = 3;
 freqvalue.text = 3;
 ampvalue.text =  50;
@@ -52,23 +54,41 @@ optionbutton.onClick = function(){
         DivdimensionSelection = divdimension.selection.index;
         };
     
-    var PorSoption = option.add("panel", undefined, "option1");
-    PorSoption.orientation = "row";
-    PorSoption.alignChildren = "light";
-        Sca = PorSoption.add("radiobutton", undefined, "apply to scale");
-        Sca.value = ScaValue;
+    var option1 = option.add("panel", undefined, "option1");
+    option1.orientation = "row";
+    option1.alignChildren = "light";
+        Sca = option1.add("radiobutton", undefined, "apply to scale");
         Sca.onClick = function() {
-            ScaValue = true;
+            ModeValue = 1;
+            for(var i = 1; 
+                i < 3;
+                i++
+                ){
+                divdimension.items[i].enabled = true;
+                }
             divdimension.items[3].enabled = false;
           };
-        Pos = PorSoption.add("radiobutton", undefined, "apply to position");
-        Pos.value = !ScaValue;
+        Pos = option1.add("radiobutton", undefined, "apply to position");
         Pos.onClick = function() {
-            ScaValue = false;
-            if(bynull.value){
-                divdimension.items[3].enabled = true;
-            }
+            ModeValue = 2;
+            for(var i = 1; 
+                i < 4;
+                i++
+                ){
+                divdimension.items[i].enabled = true;
+                }
           };
+        Rot = option1.add("radiobutton", undefined, "apply to rotation");
+        Rot.onClick = function(){
+            ModeValue = 3;
+            for(var i = 1; 
+                i < 4;
+                i++
+                ){
+                divdimension.items[i].enabled = false;
+                }
+            BynullValue = true;
+        }
 
     var NorEoptioncontainer = option.add("panel", undefined, "option2");
     var NorEoption = NorEoptioncontainer.add("group", undefined);
@@ -79,15 +99,13 @@ optionbutton.onClick = function(){
         bynull.value = BynullValue;
         bynull.onClick = function() {
             BynullValue = true;
-            if(Pos.value){
-                divdimension.items[3].enabled = true;
-            }
+            bynull.value = true;
           };
         byeffect = NorEoption.add("radiobutton", undefined, "create transform effect");
         byeffect.value = !BynullValue;
         byeffect.onClick = function() {
             BynullValue = false;
-            divdimension.items[3].enabled = false;
+            byeffect.value = true;
           };
 
     option.layout.layout();
@@ -95,7 +113,19 @@ optionbutton.onClick = function(){
         option.layout.resize();
         };
 
-    ScaValue = Sca.value;
+    if(ModeValue == 1){
+        Sca.value = true;
+        Pos.value = false;
+        Rot.value = false;
+    }else if(ModeValue == 2){
+        Sca.value = false;
+        Pos.value = true;
+        Rot.value = false;
+    }else if(ModeValue == 3){
+        Sca.value = false;
+        Pos.value = false;
+        Rot.value = true;
+    };
 
     option.show();
 };
@@ -145,7 +175,6 @@ applybutton.onClick = function (){
 
                     //apply to position
                     if(Pos.value){           
-
                     var NullProp = nullLayer.property("Position")
 
                         //XY-direction
@@ -256,8 +285,8 @@ applybutton.onClick = function (){
                                 '}\n' +
                                 'value + [0,0,Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
                         };
-                    }else{
-                        
+                    }else if(Sca.value){
+            
                     //apply to scale
                     var NullSprop = nullLayer.property("Scale");
 
@@ -341,6 +370,40 @@ applybutton.onClick = function (){
                                 '    t = time - key(n).time;\n' +
                                 '}\n' +
                                 'value + [0,Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];'; 
+                        };
+                        
+                    }else if(Rot.value){
+
+                    //apply to rotation
+
+                        var NullProp = nullLayer.property("Rotation")
+
+                        //XY-direction
+                        if(divdimension.selection == 0){
+                            var effectdecay = nullLayer.property("Effects")("decay");
+                            var effectfreq = nullLayer.property("Effects")("freq");
+                            var effectamp = nullLayer.property("Effects")("amp");
+                            effectdecay.name = "decay-Rotation";
+                            effectfreq.name = "freq-Rotation";
+                            effectamp.name = "amp-Rotation";
+                            nullLayer.name = "Bound-Rotation";
+                            NullProp.expression = 
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Rotation")("スライダー");\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Rotation")("スライダー");\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Rotation")("スライダー");\n' +
+                                'n = 0;\n' +
+                                'if (numKeys > 0){\n' +
+                                '    n = nearestKey(time).index;\n' +
+                                '    if (key(n).time > time){\n' +
+                                '        n--;\n' +
+                                '    }\n' +
+                                '}\n' +
+                                'if (n == 0){\n' +
+                                '    t = 0;\n' +
+                                '}else{\n' +
+                                '    t = time - key(n).time;\n' +
+                                '}\n' +
+                                'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
                         };
                     };
                     
@@ -477,7 +540,7 @@ applybutton.onClick = function (){
                         };
 
                     //apply to scale                    
-                    }else{
+                    }else if(Sca.value){
                         Sprop_h = transform.property("スケールの高さ");
                         Sprop_w = transform.property("スケールの幅");
 
@@ -579,6 +642,36 @@ applybutton.onClick = function (){
                                         '    t = time - key(n).time;\n' +
                                         '}\n' +
                                         'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
+                        };
+                    }else if(Rot.value){
+                        var Pprop = transform.property("回転");
+
+                        //XY-direction
+                        if(divdimension.selection == 0){
+                            var effectdecay = item.property("Effects")("decay");
+                            var effectfreq = item.property("Effects")("freq");
+                            var effectamp = item.property("Effects")("amp");
+                            effectdecay.name = "decay-Rotation";
+                            effectfreq.name = "freq-Rotation";
+                            effectamp.name = "amp-Rotation";
+                            transform.name = "Bound-Rotation"
+                            Pprop.expression = 
+                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Rotation")("スライダー");\n' +
+                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Rotation")("スライダー");\n' +
+                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Rotation")("スライダー");\n' +
+                                        'n = 0;\n' +
+                                        'if (numKeys > 0){\n' +
+                                        '    n = nearestKey(time).index;\n' +
+                                        '    if (key(n).time > time){\n' +
+                                        '        n--;\n' +
+                                        '    }\n' +
+                                        '}\n' +
+                                        'if (n == 0){\n' +
+                                        '    t = 0;\n' +
+                                        '}else{\n' +
+                                        '    t = time - key(n).time;\n' +
+                                        '}\n' +
+                                        'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];'
                         };
                     };
                 };
