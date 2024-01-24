@@ -4,14 +4,12 @@ var freqvalue = {};
 var ampvalue = {};
 var Pos = {};
 var Sca = {};
-var Rot = {};
-var ModeValue = {};
+var ScaValue = true;
 var bynull = {};
 var BynullValue = true;
 var byeffect = {};
 var divdimension = {};
 var DivdimensionSelection = 0;
-ModeValue = 1;
 decayvalue.text = 3;
 freqvalue.text = 3;
 ampvalue.text =  50;
@@ -54,41 +52,23 @@ optionbutton.onClick = function(){
         DivdimensionSelection = divdimension.selection.index;
         };
     
-    var option1 = option.add("panel", undefined, "option1");
-    option1.orientation = "row";
-    option1.alignChildren = "light";
-        Sca = option1.add("radiobutton", undefined, "apply to scale");
+    var PorSoption = option.add("panel", undefined, "option1");
+    PorSoption.orientation = "row";
+    PorSoption.alignChildren = "light";
+        Sca = PorSoption.add("radiobutton", undefined, "apply to scale");
+        Sca.value = ScaValue;
         Sca.onClick = function() {
-            ModeValue = 1;
-            for(var i = 1; 
-                i < 3;
-                i++
-                ){
-                divdimension.items[i].enabled = true;
-                }
+            ScaValue = true;
             divdimension.items[3].enabled = false;
           };
-        Pos = option1.add("radiobutton", undefined, "apply to position");
+        Pos = PorSoption.add("radiobutton", undefined, "apply to position");
+        Pos.value = !ScaValue;
         Pos.onClick = function() {
-            ModeValue = 2;
-            for(var i = 1; 
-                i < 4;
-                i++
-                ){
-                divdimension.items[i].enabled = true;
-                }
+            ScaValue = false;
+            if(bynull.value){
+                divdimension.items[3].enabled = true;
+            }
           };
-        Rot = option1.add("radiobutton", undefined, "apply to rotation");
-        Rot.onClick = function(){
-            ModeValue = 3;
-            for(var i = 1; 
-                i < 4;
-                i++
-                ){
-                divdimension.items[i].enabled = false;
-                }
-            BynullValue = true;
-        }
 
     var NorEoptioncontainer = option.add("panel", undefined, "option2");
     var NorEoption = NorEoptioncontainer.add("group", undefined);
@@ -99,13 +79,15 @@ optionbutton.onClick = function(){
         bynull.value = BynullValue;
         bynull.onClick = function() {
             BynullValue = true;
-            bynull.value = true;
+            if(Pos.value){
+                divdimension.items[3].enabled = true;
+            }
           };
         byeffect = NorEoption.add("radiobutton", undefined, "create transform effect");
         byeffect.value = !BynullValue;
         byeffect.onClick = function() {
             BynullValue = false;
-            byeffect.value = true;
+            divdimension.items[3].enabled = false;
           };
 
     option.layout.layout();
@@ -113,19 +95,7 @@ optionbutton.onClick = function(){
         option.layout.resize();
         };
 
-    if(ModeValue == 1){
-        Sca.value = true;
-        Pos.value = false;
-        Rot.value = false;
-    }else if(ModeValue == 2){
-        Sca.value = false;
-        Pos.value = true;
-        Rot.value = false;
-    }else if(ModeValue == 3){
-        Sca.value = false;
-        Pos.value = false;
-        Rot.value = true;
-    };
+    ScaValue = Sca.value;
 
     option.show();
 };
@@ -175,6 +145,7 @@ applybutton.onClick = function (){
 
                     //apply to position
                     if(Pos.value){           
+
                     var NullProp = nullLayer.property("Position")
 
                         //XY-direction
@@ -187,9 +158,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Position";
                             nullLayer.name = "Bound-Position";
                             NullProp.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Position")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Position")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Position")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Position")(1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Position")(1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Position")(1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -214,9 +185,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-X-Position";
                             nullLayer.name = "Bound-X-Position";
                             NullProp.expression =
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-X-Position")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-X-Position")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-X-Position")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-X-Position") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-X-Position") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-X-Position") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -241,9 +212,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Y-Position";
                             nullLayer.name = "Bound-Y-Position";
                             NullProp.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Position")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Position")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Position")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Position") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Position") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Position") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -268,9 +239,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Z-Position";
                             nullLayer.name = "Bound-Z-Position";
                             NullProp.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Z-Position")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Z-Position")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Z-Position")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Z-Position") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Z-Position") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Z-Position") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -285,8 +256,8 @@ applybutton.onClick = function (){
                                 '}\n' +
                                 'value + [0,0,Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
                         };
-                    }else if(Sca.value){
-            
+                    }else{
+                        
                     //apply to scale
                     var NullSprop = nullLayer.property("Scale");
 
@@ -300,9 +271,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Scale";
                             nullLayer.name = "Bound-Scale";
                             NullSprop.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Scale")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Scale")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Scale")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Scale") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Scale") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Scale") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -327,9 +298,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-X-Scale";
                             nullLayer.name = "Bound-X-Scale";
                             NullSprop.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-X-Scale")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-X-Scale")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-X-Scale")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-X-Scale") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-X-Scale") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-X-Scale") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -354,9 +325,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Y-Scale";
                             nullLayer.name = "Bound-Y-Scale";
                             NullSprop.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Scale")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Scale")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Scale")("スライダー");\n' +
+                                'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Scale") (1);\n' +
+                                'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Scale") (1);\n' +
+                                'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Scale") (1);\n' +
                                 'n = 0;\n' +
                                 'if (numKeys > 0){\n' +
                                 '    n = nearestKey(time).index;\n' +
@@ -370,40 +341,6 @@ applybutton.onClick = function (){
                                 '    t = time - key(n).time;\n' +
                                 '}\n' +
                                 'value + [0,Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];'; 
-                        };
-                        
-                    }else if(Rot.value){
-
-                    //apply to rotation
-
-                        var NullProp = nullLayer.property("Rotation")
-
-                        //XY-direction
-                        if(divdimension.selection == 0){
-                            var effectdecay = nullLayer.property("Effects")("decay");
-                            var effectfreq = nullLayer.property("Effects")("freq");
-                            var effectamp = nullLayer.property("Effects")("amp");
-                            effectdecay.name = "decay-Rotation";
-                            effectfreq.name = "freq-Rotation";
-                            effectamp.name = "amp-Rotation";
-                            nullLayer.name = "Bound-Rotation";
-                            NullProp.expression = 
-                                'decay = thisComp.layer(thisLayer.name).effect("decay-Rotation")("スライダー");\n' +
-                                'freq = thisComp.layer(thisLayer.name).effect("freq-Rotation")("スライダー");\n' +
-                                'amp = thisComp.layer(thisLayer.name).effect("amp-Rotation")("スライダー");\n' +
-                                'n = 0;\n' +
-                                'if (numKeys > 0){\n' +
-                                '    n = nearestKey(time).index;\n' +
-                                '    if (key(n).time > time){\n' +
-                                '        n--;\n' +
-                                '    }\n' +
-                                '}\n' +
-                                'if (n == 0){\n' +
-                                '    t = 0;\n' +
-                                '}else{\n' +
-                                '    t = time - key(n).time;\n' +
-                                '}\n' +
-                                'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
                         };
                     };
                     
@@ -424,7 +361,7 @@ applybutton.onClick = function (){
                     amp("ADBE Slider Control-0001").setValue(ampvalue ? ampvalue.text : 50);
 
                     // トランスフォームのエフェクトを作成する
-                    var transform = item.property("Effects").addProperty("トランスフォーム");
+                    var transform = item.property("Effects").addProperty("ADBE Geometry2");
 
                     //apply to position
                     if(Pos.value){
@@ -440,9 +377,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Position";
                             transform.name = "Bound-Position"
                             Pprop.expression = 
-                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Position")("スライダー");\n' +
-                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Position")("スライダー");\n' +
-                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Position")("スライダー");\n' +
+                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Position") (1);\n' +
+                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Position") (1);\n' +
+                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Position") (1);\n' +
                                             'n = 0;\n' +
                                             'if (numKeys > 0){\n' +
                                             '    n = nearestKey(time).index;\n' +
@@ -467,9 +404,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-X-Position";
                             transform.name = "boundcontroller-X-Position"
                             Pprop.expression =
-                                            'decay = thisComp.layer(thisLayer.name).effect("decay-X-Position")("スライダー");\n' +
-                                            'freq = thisComp.layer(thisLayer.name).effect("freq-X-Position")("スライダー");\n' +
-                                            'amp = thisComp.layer(thisLayer.name).effect("amp-X-Position")("スライダー");\n' +
+                                            'decay = thisComp.layer(thisLayer.name).effect("decay-X-Position") (1);\n' +
+                                            'freq = thisComp.layer(thisLayer.name).effect("freq-X-Position") (1);\n' +
+                                            'amp = thisComp.layer(thisLayer.name).effect("amp-X-Position") (1);\n' +
                                             'n = 0;\n' +
                                             'if (numKeys > 0){\n' +
                                             '    n = nearestKey(time).index;\n' +
@@ -494,9 +431,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Y-Position";
                             transform.name = "boundcontroller-Y-Position"
                             Pprop.expression =
-                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Position")("スライダー");\n' +
-                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Position")("スライダー");\n' +
-                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Position")("スライダー");\n' +
+                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Position") (1);\n' +
+                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Position") (1);\n' +
+                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Position") (1);\n' +
                                             'n = 0;\n' +
                                             'if (numKeys > 0){\n' +
                                             '    n = nearestKey(time).index;\n' +
@@ -521,9 +458,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Z-Position";
                             transform.name = "boundcontroller-Z-Position"
                             Pprop.expression =
-                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Z-Position")("スライダー");\n' +
-                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Z-Position")("スライダー");\n' +
-                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Z-Position")("スライダー");\n' +
+                                            'decay = thisComp.layer(thisLayer.name).effect("decay-Z-Position") (1);\n' +
+                                            'freq = thisComp.layer(thisLayer.name).effect("freq-Z-Position") (1);\n' +
+                                            'amp = thisComp.layer(thisLayer.name).effect("amp-Z-Position") (1);\n' +
                                             'n = 0;\n' +
                                             'if (numKeys > 0){\n' +
                                             '    n = nearestKey(time).index;\n' +
@@ -540,7 +477,7 @@ applybutton.onClick = function (){
                         };
 
                     //apply to scale                    
-                    }else if(Sca.value){
+                    }else{
                         Sprop_h = transform.property("スケールの高さ");
                         Sprop_w = transform.property("スケールの幅");
 
@@ -554,9 +491,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Scale";
                             transform.name = "boundcontroller-Scale"
                             Sprop_h.expression = 
-                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Scale")("スライダー");\n' +
-                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Scale")("スライダー");\n' +
-                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Scale")("スライダー");\n' +
+                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Scale") (1);\n' +
+                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Scale") (1);\n' +
+                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Scale") (1);\n' +
                                         'n = 0;\n' +
                                         'if (numKeys > 0){\n' +
                                         '    n = nearestKey(time).index;\n' +
@@ -572,9 +509,9 @@ applybutton.onClick = function (){
                                         'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
 
                             Sprop_w.expression =
-                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Scale")("スライダー");\n' +
-                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Scale")("スライダー");\n' +
-                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Scale")("スライダー");\n' +
+                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Scale") (1);\n' +
+                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Scale") (1);\n' +
+                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Scale") (1);\n' +
                                         'n = 0;\n' +
                                         'if (numKeys > 0){\n' +
                                         '    n = nearestKey(time).index;\n' +
@@ -599,9 +536,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-X-Scale";
                             transform.name = "boundcontroller-X-Scale"
                             Sprop_w.expression = 
-                                        'decay = thisComp.layer(thisLayer.name).effect("decay-X-Scale")("スライダー");\n' +
-                                        'freq = thisComp.layer(thisLayer.name).effect("freq-X-Scale")("スライダー");\n' +
-                                        'amp = thisComp.layer(thisLayer.name).effect("amp-X-Scale")("スライダー");\n' +
+                                        'decay = thisComp.layer(thisLayer.name).effect("decay-X-Scale") (1);\n' +
+                                        'freq = thisComp.layer(thisLayer.name).effect("freq-X-Scale") (1);\n' +
+                                        'amp = thisComp.layer(thisLayer.name).effect("amp-X-Scale") (1);\n' +
                                         'n = 0;\n' +
                                         'if (numKeys > 0){\n' +
                                         '    n = nearestKey(time).index;\n' +
@@ -626,9 +563,9 @@ applybutton.onClick = function (){
                             effectamp.name = "amp-Y-Scale";
                             transform.name = "boundcontroller-Y-Scale"
                             Sprop_h.expression = 
-                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Scale")("スライダー");\n' +
-                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Scale")("スライダー");\n' +
-                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Scale")("スライダー");\n' +
+                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Y-Scale") (1);\n' +
+                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Y-Scale") (1);\n' +
+                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Y-Scale") (1);\n' +
                                         'n = 0;\n' +
                                         'if (numKeys > 0){\n' +
                                         '    n = nearestKey(time).index;\n' +
@@ -642,36 +579,6 @@ applybutton.onClick = function (){
                                         '    t = time - key(n).time;\n' +
                                         '}\n' +
                                         'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];';
-                        };
-                    }else if(Rot.value){
-                        var Pprop = transform.property("回転");
-
-                        //XY-direction
-                        if(divdimension.selection == 0){
-                            var effectdecay = item.property("Effects")("decay");
-                            var effectfreq = item.property("Effects")("freq");
-                            var effectamp = item.property("Effects")("amp");
-                            effectdecay.name = "decay-Rotation";
-                            effectfreq.name = "freq-Rotation";
-                            effectamp.name = "amp-Rotation";
-                            transform.name = "Bound-Rotation"
-                            Pprop.expression = 
-                                        'decay = thisComp.layer(thisLayer.name).effect("decay-Rotation")("スライダー");\n' +
-                                        'freq = thisComp.layer(thisLayer.name).effect("freq-Rotation")("スライダー");\n' +
-                                        'amp = thisComp.layer(thisLayer.name).effect("amp-Rotation")("スライダー");\n' +
-                                        'n = 0;\n' +
-                                        'if (numKeys > 0){\n' +
-                                        '    n = nearestKey(time).index;\n' +
-                                        '    if (key(n).time > time){\n' +
-                                        '        n--;\n' +
-                                        '    }\n' +
-                                        '}\n' +
-                                        'if (n == 0){\n' +
-                                        '    t = 0;\n' +
-                                        '}else{\n' +
-                                        '    t = time - key(n).time;\n' +
-                                        '}\n' +
-                                        'value + [Math.sin(t*freq*2*Math.PI)/Math.exp(decay*t)*amp];'
                         };
                     };
                 };
