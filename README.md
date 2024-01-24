@@ -1,5 +1,62 @@
 # BoundMove
 
+Panel dockable script for bound animation in AfterEffect
+
+# Operation confirmation
+
+After Effects CC 2022
+
+# install
+
+Put BoundMove.jsx in the Adobe > Adobe After Effect 2022 > Support Files > ScriptUI Panels directory
+
+# How to use
+
+Start it from the window menu
+
+The basic layout is Option and Apply　Setting with Option, applying with Apply
+
+If you hit a keyframe on an applied null object or transform effect, it will bounce based on the keyframe
+(The text is in red because it is expression control)
+
+Do not change the names of the slider controls for Decay, Frequency, and Amplitude effects, as they are obtained using the layer name.
+
+Also, because the effect name of the Japanese version is specified, **it will not work correctly in non-Japanese versions** (I don't understand the localize function well)
+
+Multiple layers can be selected
+
+## Option contents
+
+Decay: Decay
+Frequency: Vibration frequency
+Amplitude: amplitude
+
+This is the initial value and can be controlled with the slider control added after application. Negative values are also possible.
+
+direction dropdown menu:
+
+Specify the direction to apply
+
+Z-direction is possible only when apply to position and create null controller is selected, and both the generated null object and the selected layer must be 3D objects.
+
+apply to scale:
+
+Apply a bounce effect to the scale
+
+apply to positon:
+
+Apply a bounce effect to the position
+
+create null controller:
+
+Control the layer you want to move with a null object. Enter a keyframe on the null transformation.
+When overlapping multiple objects, apply it to the first null object created (because it is controlled by whip)
+
+create transform effect:
+
+Add and control the transformation along with slider control to the selected layer. Hit a keyframe on the transformation of the created effect.
+______________________________________________________________________________________
+
 AfterEffectにおけるバウンドアニメーション用のパネルドッキング可能なスクリプト
 
 # 動作確認
