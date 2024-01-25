@@ -21,6 +21,8 @@ divdimension.selection = DivdimensionSelection;
 var buttongroup = this.add("group", undefined);
 buttongroup.orientation="row";
 
+var applybutton = buttongroup.add('button', undefined,"Apply");
+
 var optionbutton = buttongroup.add("button", undefined, "Option");
 
 optionbutton.onClick = function(){   
@@ -99,8 +101,6 @@ optionbutton.onClick = function(){
 
     option.show();
 };
-
-var applybutton = buttongroup.add('button', undefined,"Apply");
 
 this.layout.layout();
 this.onResize = function(){
