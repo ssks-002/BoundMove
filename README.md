@@ -21,8 +21,6 @@ If you hit a keyframe on an applied null object or transform effect, it will bou
 
 Do not change the names of the slider controls for Decay, Frequency, and Amplitude effects, as they are obtained using the layer name.
 
-Also, because the effect name of the Japanese version is specified, **it will not work correctly in non-Japanese versions** (I don't understand the localize function well)
-
 Multiple layers can be selected
 
 ## Option contents
@@ -77,8 +75,6 @@ BoundMove.jsxをAdobe> Adobe After Effect 2022> Support Files> ScriptUI Panels�
 （エクスプレッション制御なので赤くなってる文字のところ）
 
 エフェクトのDecay,Frequency,Amplitudeそれぞれの**スライダー制御の名前は変えちゃダメ**です　レイヤーの名前で取得しているためです
-
-また、日本語版のエフェクト名を指定しているため、**日本語版以外では正しく動作しません**（localize関数がよくわかりません）
 
 複数レイヤー選択可能
 
